@@ -1,13 +1,16 @@
 import { google } from "googleapis";
+import type { NextApiRequest, NextApiResponse } from "next";
 import fs from "fs";
 import path from "path";
-import type { NextApiRequest, NextApiResponse } from "next";
 
 export const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     if (req.method !== "POST") {
+        const data = req.body.shareef;
+
         res.status(200).json({
             message: "Invalid Method!",
-            filepath: path.join(process.cwd(), "public/images/demo.png"),
+            // filepath: path.join(process.cwd(), "public/images/demo.png"),
+            data: data,
         });
         return;
     }
@@ -26,23 +29,30 @@ export const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     );
 
     oauth2Client.setCredentials({ refresh_token: REFRESH_TOKEN });
-    // const filepath: string = req.body.image;
-    const filepath = path.join(process.cwd(), "public/images/demo.jpg");
+    // const file = req.body.file;
+    console.log(req.body);
+
+    const file = path.join(process.cwd(), "public/images/demo.jpg");
+    console.log(`file: ${file}`);
 
     const drive = google.drive({
         version: "v3",
         auth: oauth2Client,
     });
 
+    const fileMetadata = {
+        name: "photo.jpg",
+    };
+
     try {
         const result = await drive.files.create({
             requestBody: {
-                name: "ShareefBlog.jpg",
+                name: "demo",
                 mimeType: "image/jpg",
             },
             media: {
                 mimeType: "image/jpg",
-                body: fs.createReadStream(filepath),
+                body: fs.createReadStream(file),
             },
         });
 
@@ -50,7 +60,9 @@ export const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         res.status(200).json({ message: result });
     } catch (error) {
         console.log(error);
-        res.status(500).json({ message: "something went wrong" });
+        res.status(422).json({
+            message: error.message || "something went wrong",
+        });
     }
 };
 

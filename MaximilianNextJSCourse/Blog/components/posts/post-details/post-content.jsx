@@ -1,7 +1,7 @@
+import Image from "next/image";
 import classes from "../../../styles/components/posts/post-details/post-content.module.css";
 import PostHeader from "./post-header";
 import ReactMarkdown from "react-markdown";
-import Image from "next/image";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { atomDark } from "react-syntax-highlighter/dist/cjs/styles/prism";
 
