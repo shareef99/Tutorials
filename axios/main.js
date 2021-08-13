@@ -1,6 +1,25 @@
 // GET REQUEST
 function getTodos() {
-    console.log("GET Request");
+    // axios({
+    //     method: "get",
+    //     url: "https://jsonplaceholder.typicode.com/todos",
+    //     params: {
+    //         // Any url parameter(?)
+    //         _limit: 10,
+    //     },
+    // })
+    // Another way of doing it.
+    // axios
+    //     .get("https://jsonplaceholder.typicode.com/todos", {
+    //         params: { _limit: 5 },
+    //     })
+    // While making get request you can remove .get and it will perform get request
+    // by default
+    axios("https://jsonplaceholder.typicode.com/todos", {
+        params: { _limit: 5 },
+    })
+        .then((res) => showOutput(res))
+        .catch((err) => console.log(err));
 }
 
 // POST REQUEST
