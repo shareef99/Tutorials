@@ -5,10 +5,10 @@ import { db } from "./firebase";
 import { defaultLayoutPlugin } from "@react-pdf-viewer/default-layout";
 import "@react-pdf-viewer/core/lib/styles/index.css";
 import "@react-pdf-viewer/default-layout/lib/styles/index.css";
+import { subjects } from "./notes";
 
 export const App = () => {
     const [collections, setCollection] = useState();
-    const [pdf, setPdf] = useState();
 
     useEffect(() => {
         db.collection("pdfs").onSnapshot((snap) => {
@@ -20,7 +20,7 @@ export const App = () => {
         });
     }, []);
 
-    console.log(collections);
+    console.log(subjects);
 
     const handleFile = (e) => {
         e.preventDefault();
@@ -32,11 +32,19 @@ export const App = () => {
             reader.readAsDataURL(file);
             reader.onloadend = (e) => {
                 // setPdf(e.target.result);
-                db.collection("pdfs").add({
-                    name: file.name,
-                    size: file.size,
-                    pdfData: e.target.result,
-                });
+                // db.collection("pdfs").add({
+                //     name: file.name,
+                //     size: file.size,
+                //     pdfData: e.target.result,
+                // });
+                const notes = subjects
+                    .find((x) => x.subjectName === "Maths")
+                    .subjectNotes.find((x) => x.type === "notes").notes;
+
+                console.log(notes);
+                console.log(notes.push({ name: "males" }));
+
+                console.log(notes);
             };
         } else {
             console.log("No file");
@@ -49,12 +57,12 @@ export const App = () => {
                 <input type="file" onChange={handleFile} />
             </form>
             <div className="pdf-container">
-                <Worker workerUrl="https://unpkg.com/pdfjs-dist@2.6.347/build/pdf.worker.min.js">
+                {/* <Worker workerUrl="https://unpkg.com/pdfjs-dist@2.6.347/build/pdf.worker.min.js">
                     <Viewer
-                        fileUrl={collections[1].pdfData}
+                        fileUrl={collections[1]?.pdfData}
                         plugins={[defaultLayoutPlugin]}
                     />
-                </Worker>
+                </Worker> */}
             </div>
         </section>
     );
