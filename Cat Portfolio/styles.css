@@ -23,6 +23,7 @@
 html,
 body {
     background-color: var(--gray);
+    scroll-behavior: smooth;
 }
 
 /* NavBar Styles */
@@ -197,19 +198,19 @@ nav li {
     font-size: 1.5rem;
 }
 
-/* Footer */
+/* Contact */
 
-footer {
+.contact {
     background-color: var(--white);
     padding: 100px 0 50px;
     text-align: center;
 }
 
-footer h2 {
+.contact h2 {
     font-size: 2.5rem;
 }
 
-footer a {
+.contact a {
     display: inline-block;
     background-color: var(--gray);
     color: var(--purple);
